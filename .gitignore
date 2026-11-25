@@ -1,0 +1,24 @@
+# dependencies
+node_modules/
+npm-debug.log*
+
+# environment
+.env
+.env.local
+.env.*.local
+
+# editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# build / temp
+dist/
+build/
+coverage/
+tmp/
+*.log
+
+# uploads kept locally during development
+uploads/
