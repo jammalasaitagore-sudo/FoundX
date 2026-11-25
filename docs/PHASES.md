@@ -30,6 +30,11 @@ Delivered:
 * Middleware chain: helmet, CORS allow-list, rate limiting, JSON body parsing, Zod validation,
   bearer-token auth, central error handler with a single error shape.
 * `npm run smoke` — 12 automated checks.
+* `scripts/configure.mjs` — writes `.env` from three command-line arguments or prompts, so the
+  project can be set up without editing any file.
+* `postman/FoundX.postman_collection.json` — 26 requests with assertions across 7 folders
+  (health, auth, items, meta, invalid input, unauthorised access, logout/revocation). Delivered
+  early so API evidence exists for every phase, not only at the end.
 
 Verified locally: server boots, all public routes answer, validation returns 400, protected
 routes return 401 without a token, unknown routes return 404 JSON.

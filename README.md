@@ -21,7 +21,10 @@ cloud host.
 | Phase 2 | Items create / update / delete, image upload to Supabase Storage, duplicate-item alerts | ⏳ Next |
 | Phase 3 | Claims workflow (submit → review → approve/reject), notifications, item status transitions | ⏳ |
 | Phase 4 | Front-end: home, browse/search, item detail, auth pages, user dashboard, admin dashboard + charts | ⏳ |
-| Phase 5 | Postman collection (10+ cases), README/report polish, deployment | ⏳ |
+| Phase 5 | Report draft, README polish, final deployment | ⏳ (Postman collection already included: 26 requests) |
+
+**Just want to run it?** [`QUICKSTART.md`](QUICKSTART.md) has the commands in order — install,
+write `.env` with one command, seed, start, test in Postman, push.
 
 Detailed per-phase notes live in [`docs/PHASES.md`](docs/PHASES.md).
 
@@ -60,7 +63,11 @@ Express REST API  ── service_role key ──▶  Supabase PostgreSQL
 FoundX/
 ├── public/                      # static front-end (built in Phase 4)
 │   └── index.html
+├── postman/
+│   ├── FoundX.postman_collection.json   # 26 requests with assertions
+│   └── README.md                        # how to run and save evidence
 ├── scripts/
+│   ├── configure.mjs            # writes .env from your three keys
 │   ├── seed.js                  # demo users + 12 sample items
 │   └── smoke-test.js            # end-to-end API checks
 ├── src/
@@ -221,7 +228,9 @@ Covers: health/database status, item listing, keyword search, invalid enum rejec
 categories, unauthenticated access (401), wrong password (401), invalid registration (400),
 login, profile fetch, logout, and rejection of the revoked token.
 
-A Postman collection with the required 8+ documented cases is added in Phase 5.
+**Postman:** import `postman/FoundX.postman_collection.json`, set the `baseUrl` variable and run
+the collection. 26 requests with assertions cover success paths, validation failures,
+unauthorised access and token revocation — see `postman/README.md`.
 
 ---
 
