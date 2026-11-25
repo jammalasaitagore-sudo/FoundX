@@ -90,21 +90,25 @@ FoundX/
 
 ## 4. Setup
 
-### 4.1 Create the Supabase project
+### 4.1 Create the database (one paste)
 
-1. Go to <https://supabase.com/dashboard> → **New project**. Choose a region close to you
-   (e.g. Mumbai / Singapore) and save the database password.
-2. **SQL Editor → New query** → paste the whole of
-   `supabase/migrations/0001_init.sql` → **Run**.
-3. Repeat with `supabase/migrations/0002_seed_categories.sql`.
-4. **Project Settings → API** and copy:
+1. Open your project at <https://supabase.com/dashboard>.
+2. **SQL Editor → New query**.
+3. Open `supabase/setup_all.sql`, copy **the whole file**, paste it into the editor and press
+   **Run**. It creates every table, index, trigger, RLS policy, the storage bucket and the nine
+   categories in one go, and is safe to run twice.
+4. **Authentication → Providers → Email**: turn *Confirm email* **off** for the demo so accounts
+   work instantly. (Registration still works with it on, because the API creates pre-confirmed
+   users, but turning it off avoids surprises.)
+5. **Project Settings → API keys**: copy
    * `Project URL` → `SUPABASE_URL`
-   * `anon` / `public` key → `SUPABASE_ANON_KEY`
-   * `service_role` key → `SUPABASE_SERVICE_ROLE_KEY` (server only, never in the browser)
-5. **Authentication → Providers → Email**: turn *Confirm email* **off** for the demo so
-   accounts work instantly (re-enable it for production).
+   * `publishable` key (`sb_publishable_…`, formerly `anon`) → `SUPABASE_ANON_KEY`
+   * `secret` key (`sb_secret_…`, formerly `service_role`) → `SUPABASE_SERVICE_ROLE_KEY`
 
-### 4.2 Run locally
+> The **secret** key bypasses Row Level Security. It belongs only in the server environment,
+> never in the browser, and never in a commit.
+
+### 4.2 Run locally (optional)
 
 ```bash
 git clone https://github.com/jammalasaitagore-sudo/FoundX.git
@@ -117,7 +121,7 @@ npm run dev                 # http://localhost:4000
 
 Check it is alive: <http://localhost:4000/api/health> should report `"database": "connected"`.
 
-### 4.3 Demo accounts (created by `npm run seed`)
+### 4.3 Demo accounts (created by the seed)
 
 | Role | Email | Password |
 |------|-------|----------|
@@ -234,10 +238,11 @@ A Postman collection with the required 8+ documented cases is added in Phase 5.
 
 ---
 
-## 9. Deployment
+## 9. Deployment (Render)
 
-The API is a plain Node process, so it runs on any Node host. Recommended: **Render** (free
-web service) with the same environment variables as `.env`.
+The repository ships a `render.yaml` blueprint, so Render configures the service, the start
+command and the health check by itself. See [`docs/DEPLOY.md`](docs/DEPLOY.md) for the
+click-by-click version.
 
 ```
 Build command : npm install
@@ -245,7 +250,12 @@ Start command : npm start
 Health check  : /api/health
 ```
 
-Remember to add the deployed URL to `CORS_ORIGINS`.
+Environment variables to set in Render: `SUPABASE_URL`, `SUPABASE_ANON_KEY`,
+`SUPABASE_SERVICE_ROLE_KEY`, `SEED_ON_START=true`, `CORS_ORIGINS` (the deployed URL).
+
+`SEED_ON_START=true` fills an empty database with the demo accounts and 12 sample items on the
+first boot, so no shell access or local setup is needed. It never touches a database that
+already contains items; set it to `false` once the data is in place.
 
 ---
 

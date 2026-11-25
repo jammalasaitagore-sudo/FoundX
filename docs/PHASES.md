@@ -34,8 +34,15 @@ Delivered:
 Verified locally: server boots, all public routes answer, validation returns 400, protected
 routes return 401 without a token, unknown routes return 404 JSON.
 
-**Pending from you:** Supabase project URL + anon key + service_role key, so the schema can be
-applied and the seed/smoke runs executed against the live database.
+**Verification:** the two migrations were executed against a real PostgreSQL instance with
+Supabase `auth`/`storage` schema stubs: both apply cleanly, both re-apply cleanly (idempotent),
+and 12 behaviour checks pass — profile trigger, metadata mapping, 9 categories, generated
+`search_vector` matching, `admin_stats` view, default status, title length constraint, storage
+bucket, claims unique constraint, RLS enabled, 5 item policies, `updated_at` trigger.
+
+**Deployment enablement:** `supabase/setup_all.sql` (single paste), `render.yaml` blueprint and
+`SEED_ON_START` bootstrap added, so the whole stack can be stood up from a browser with no
+local commands.
 
 ---
 

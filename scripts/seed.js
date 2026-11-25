@@ -275,7 +275,7 @@ async function ensureUser(user) {
   return id;
 }
 
-async function main() {
+export async function runSeed() {
   console.log('[seed] Creating demo accounts...');
   const idByEmail = {};
   for (const user of USERS) {
@@ -318,7 +318,13 @@ async function main() {
   console.log('');
 }
 
-main().catch((error) => {
-  console.error('[seed] Failed:', error.message || error);
-  process.exit(1);
-});
+// Run directly: `npm run seed`. When imported by the server (SEED_ON_START)
+// nothing is executed at import time.
+const invokedDirectly = Boolean(process.argv[1]) && process.argv[1].endsWith('seed.js');
+
+if (invokedDirectly) {
+  runSeed().catch((error) => {
+    console.error('[seed] Failed:', error.message || error);
+    process.exit(1);
+  });
+}

@@ -1,0 +1,33 @@
+# Render Blueprint for FoundX
+# Connect this repository in Render -> New -> Blueprint, then fill in the
+# three Supabase values when prompted.
+services:
+  - type: web
+    name: foundx
+    runtime: node
+    plan: free
+    region: singapore
+    branch: main
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SUPABASE_STORAGE_BUCKET
+        value: item-images
+      - key: MAX_UPLOAD_MB
+        value: "5"
+      # Fills the database with demo accounts + 12 sample items the first time
+      # the service boots against an empty database. Set to "false" afterwards.
+      - key: SEED_ON_START
+        value: "true"
+      - key: CORS_ORIGINS
+        value: "*"
